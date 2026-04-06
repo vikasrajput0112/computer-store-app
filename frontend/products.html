@@ -33,17 +33,21 @@
 
 <script>
 
-// 🔹 All products
+// 🔹 Products
 const products = [
-    { name: "Logitech Gaming Mouse", category: "mouse", price: "₹799" },
-    { name: "HP Gaming Mouse", category: "mouse", price: "₹699" },
-    { name: "Dell Gaming Mouse", category: "mouse", price: "₹649" },
-    { name: "Redgear Gaming Mouse", category: "mouse", price: "₹599" },
+    // RAM products
+    { name: "DDR3 2GB RAM", category: "ram", type: "ddr3", size: "2GB", price: "₹800" },
+    { name: "DDR3 4GB RAM", category: "ram", type: "ddr3", size: "4GB", price: "₹1200" },
 
-    { name: "16GB RAM", category: "ram", price: "₹2999" },
-    { name: "512GB SSD", category: "ssd", price: "₹3499" },
-    { name: "1TB HDD", category: "hdd", price: "₹2500" },
-    { name: "Intel i5 Processor", category: "cpu", price: "₹12000" }
+    { name: "DDR4 8GB RAM", category: "ram", type: "ddr4", size: "8GB", price: "₹2500" },
+    { name: "DDR4 16GB RAM", category: "ram", type: "ddr4", size: "16GB", price: "₹4500" },
+
+    { name: "DDR5 8GB RAM", category: "ram", type: "ddr5", size: "8GB", price: "₹4000" },
+    { name: "DDR5 16GB RAM", category: "ram", type: "ddr5", size: "16GB", price: "₹7000" },
+
+    // Other products
+    { name: "Logitech Gaming Mouse", category: "mouse", price: "₹799" },
+    { name: "HP Gaming Mouse", category: "mouse", price: "₹699" }
 ];
 
 // 🔹 Categories
@@ -55,15 +59,87 @@ const categories = [
     { name: "Processor", key: "cpu" }
 ];
 
-// 🔹 Get URL param
+// 🔹 RAM Types
+const ramTypes = [
+    { name: "DDR3", key: "ddr3" },
+    { name: "DDR4", key: "ddr4" },
+    { name: "DDR5", key: "ddr5" }
+];
+
+// 🔹 URL params
 const params = new URLSearchParams(window.location.search);
 const selectedCategory = params.get("category");
+const selectedType = params.get("type");
 
 const container = document.getElementById("product-container");
 const title = document.getElementById("page-title");
 
-// 🔥 If category selected → show products
-if (selectedCategory) {
+// 🔥 STEP 1: Show categories
+if (!selectedCategory) {
+
+    title.innerText = "Product Categories";
+
+    categories.forEach(cat => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.cursor = "pointer";
+
+        div.innerHTML = `<h3>${cat.name}</h3><p>View Products</p>`;
+
+        div.onclick = () => {
+            window.location.href = `products.html?category=${cat.key}`;
+        };
+
+        container.appendChild(div);
+    });
+}
+
+// 🔥 STEP 2: If RAM selected → show RAM types
+else if (selectedCategory === "ram" && !selectedType) {
+
+    title.innerText = "Select RAM Type";
+
+    ramTypes.forEach(type => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.cursor = "pointer";
+
+        div.innerHTML = `<h3>${type.name}</h3><p>Select</p>`;
+
+        div.onclick = () => {
+            window.location.href = `products.html?category=ram&type=${type.key}`;
+        };
+
+        container.appendChild(div);
+    });
+}
+
+// 🔥 STEP 3: Show RAM products
+else if (selectedCategory === "ram" && selectedType) {
+
+    title.innerText = selectedType.toUpperCase() + " RAM";
+
+    const filtered = products.filter(p =>
+        p.category === "ram" && p.type === selectedType
+    );
+
+    filtered.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>${product.size}</p>
+            <h4>${product.price}</h4>
+            <button>Add to Cart</button>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// 🔥 STEP 4: Other categories (mouse etc.)
+else {
 
     title.innerText = selectedCategory.toUpperCase() + " PRODUCTS";
 
@@ -75,32 +151,9 @@ if (selectedCategory) {
 
         div.innerHTML = `
             <h3>${product.name}</h3>
-            <p>${product.category.toUpperCase()}</p>
             <h4>${product.price}</h4>
             <button>Add to Cart</button>
         `;
-
-        container.appendChild(div);
-    });
-
-} else {
-
-    // 🔥 Default → show categories
-    title.innerText = "Product Categories";
-
-    categories.forEach(cat => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.style.cursor = "pointer";
-
-        div.innerHTML = `
-            <h3>${cat.name}</h3>
-            <p>View Products</p>
-        `;
-
-        div.onclick = () => {
-            window.location.href = "products.html?category=" + cat.key;
-        };
 
         container.appendChild(div);
     });
