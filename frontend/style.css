@@ -1,9 +1,89 @@
 body {
-    font-family: Arial;
-    text-align: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e1e2f;
+    color: white;
+    padding: 15px 30px;
+}
+
+header .logo {
+    font-size: 22px;
+    font-weight: bold;
 }
 
 nav a {
-    margin: 10px;
+    color: white;
+    margin: 0 10px;
     text-decoration: none;
+}
+
+nav a:hover {
+    color: #00c3ff;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to right, #007bff, #00c3ff);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.hero button {
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.hero button:hover {
+    background: #ddd;
+}
+
+/* PRODUCTS */
+.products {
+    padding: 40px;
+    text-align: center;
+}
+
+.product-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #f4f4f4;
+    padding: 20px;
+    width: 200px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background: #e0f7ff;
+}
+
+/* FOOTER */
+footer {
+    background: #1e1e2f;
+    color: white;
+    text-align: center;
+    padding: 15px;
 }
