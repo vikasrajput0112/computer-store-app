@@ -1,3 +1,107 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e1e2f;
+    color: white;
+    padding: 15px 30px;
+}
+
+header .logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #00c3ff;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to right, #007bff, #00c3ff);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.hero button {
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.hero button:hover {
+    background: #ddd;
+}
+
+/* PRODUCTS */
+.products {
+    padding: 40px;
+    text-align: center;
+}
+
+/* ✅ KEEP ORIGINAL FLEX (do NOT override with grid) */
+.product-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #f4f4f4;
+    padding: 20px;
+    width: 200px;
+    border-radius: 10px;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background: #e0f7ff;
+}
+
+/* ✅ SAFE ADDITIONS (no conflict) */
+.card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.card button {
+    margin-top: 10px;
+    padding: 8px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.card button:hover {
+    background: #0056b3;
+}
+
 /* ABOUT SECTION */
 .about {
     padding: 40px;
@@ -26,4 +130,12 @@
 .feature-box:hover {
     background: #e0f7ff;
     transform: translateY(-5px);
+}
+
+/* FOOTER */
+footer {
+    background: #1e1e2f;
+    color: white;
+    text-align: center;
+    padding: 15px;
 }
