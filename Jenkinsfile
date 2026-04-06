@@ -2,32 +2,32 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "computer-store"
-        CONTAINER_NAME = "computer-store-container"
+        IMAGE_NAME = "vikasrajput0112/computer-store"
     }
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
 
-        stage('Stop & Remove Old Container') {
+        stage('Login to DockerHub') {
             steps {
-                sh '''
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
-                '''
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-cred',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
             }
         }
 
-        stage('Run Container') {
+        stage('Push Image') {
             steps {
-                sh '''
-                docker run -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME
-                '''
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
     }
