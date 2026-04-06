@@ -7,9 +7,20 @@ pipeline {
 
     stages {
 
+        stage('Generate Tag') {
+            steps {
+                script {
+                    env.TAG = sh(
+                        script: "date +%Y%m%d-%H%M%S",
+                        returnStdout: true
+                    ).trim()
+                }
+            }
+        }
+
         stage('Build Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
             }
         }
 
@@ -27,15 +38,19 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                sh 'docker push $IMAGE_NAME:latest'
+                sh 'docker push $IMAGE_NAME:$TAG'
             }
         }
 
         stage('Cleanup Docker') {
             steps {
-                sh '''
-                docker system prune -af || true
-                '''
+                sh 'docker system prune -af || true'
+            }
+        }
+
+        stage('Show Image Info') {
+            steps {
+                echo "Pushed Image: ${IMAGE_NAME}:${TAG}"
             }
         }
     }
