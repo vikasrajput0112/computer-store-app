@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "computer-store"
+        CONTAINER_NAME = "computer-store-container"
     }
 
     stages {
@@ -13,9 +14,20 @@ pipeline {
             }
         }
 
+        stage('Stop & Remove Old Container') {
+            steps {
+                sh '''
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                '''
+            }
+        }
+
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 $IMAGE_NAME'
+                sh '''
+                docker run -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME
+                '''
             }
         }
     }
