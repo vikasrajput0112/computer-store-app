@@ -19,10 +19,10 @@
 
 <!-- PRODUCTS SECTION -->
 <section class="products">
-    <h1>Our Products</h1>
+    <h1 id="page-title">Product Categories</h1>
 
     <div class="product-container" id="product-container">
-        <!-- Products will be injected by JS -->
+        <!-- Dynamic content -->
     </div>
 </section>
 
@@ -31,48 +31,80 @@
     <p>© 2026 Computer Store | All Rights Reserved</p>
 </footer>
 
-<!-- SCRIPT -->
 <script>
 
+// 🔹 All products
 const products = [
-    // 🖱️ Mouse Category
     { name: "Logitech Gaming Mouse", category: "mouse", price: "₹799" },
     { name: "HP Gaming Mouse", category: "mouse", price: "₹699" },
     { name: "Dell Gaming Mouse", category: "mouse", price: "₹649" },
     { name: "Redgear Gaming Mouse", category: "mouse", price: "₹599" },
 
-    // 💾 Other Products
     { name: "16GB RAM", category: "ram", price: "₹2999" },
     { name: "512GB SSD", category: "ssd", price: "₹3499" },
     { name: "1TB HDD", category: "hdd", price: "₹2500" },
     { name: "Intel i5 Processor", category: "cpu", price: "₹12000" }
 ];
 
-// 👉 Get category from URL
+// 🔹 Categories
+const categories = [
+    { name: "Mouse", key: "mouse" },
+    { name: "RAM", key: "ram" },
+    { name: "SSD", key: "ssd" },
+    { name: "HDD", key: "hdd" },
+    { name: "Processor", key: "cpu" }
+];
+
+// 🔹 Get URL param
 const params = new URLSearchParams(window.location.search);
 const selectedCategory = params.get("category");
 
-// 👉 Filter products
-const filteredProducts = selectedCategory
-    ? products.filter(p => p.category === selectedCategory)
-    : products;
-
-// 👉 Render products
 const container = document.getElementById("product-container");
+const title = document.getElementById("page-title");
 
-filteredProducts.forEach(product => {
-    const div = document.createElement("div");
-    div.className = "card";
+// 🔥 If category selected → show products
+if (selectedCategory) {
 
-    div.innerHTML = `
-        <h3>${product.name}</h3>
-        <p>${product.category.toUpperCase()}</p>
-        <h4>${product.price}</h4>
-        <button>Add to Cart</button>
-    `;
+    title.innerText = selectedCategory.toUpperCase() + " PRODUCTS";
 
-    container.appendChild(div);
-});
+    const filtered = products.filter(p => p.category === selectedCategory);
+
+    filtered.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>${product.category.toUpperCase()}</p>
+            <h4>${product.price}</h4>
+            <button>Add to Cart</button>
+        `;
+
+        container.appendChild(div);
+    });
+
+} else {
+
+    // 🔥 Default → show categories
+    title.innerText = "Product Categories";
+
+    categories.forEach(cat => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.cursor = "pointer";
+
+        div.innerHTML = `
+            <h3>${cat.name}</h3>
+            <p>View Products</p>
+        `;
+
+        div.onclick = () => {
+            window.location.href = "products.html?category=" + cat.key;
+        };
+
+        container.appendChild(div);
+    });
+}
 
 </script>
 
