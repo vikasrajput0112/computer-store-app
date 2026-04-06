@@ -53,5 +53,14 @@ pipeline {
                 echo "Pushed Image: ${IMAGE_NAME}:${TAG}"
             }
         }
+        stage('Deploy to Kubernetes') {
+    steps {
+        sh """
+        sed -i 's|image: .*|image: ${IMAGE_NAME}:${TAG}|g' k8s/deployment.yaml
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
+        """
+    }
+}
     }
 }
