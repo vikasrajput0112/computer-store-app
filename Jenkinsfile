@@ -25,6 +25,13 @@ pipeline {
             }
         }
 
+        stage('Cleanup Docker') {
+    steps {
+        sh '''
+        docker system prune -af || true
+        '''
+    }
+}
         stage('Push Image') {
             steps {
                 sh 'docker push $IMAGE_NAME:latest'
