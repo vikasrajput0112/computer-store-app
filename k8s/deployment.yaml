@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: computer-store
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: computer-store
