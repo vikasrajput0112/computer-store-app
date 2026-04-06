@@ -41,13 +41,13 @@ pipeline {
                 sh 'docker push $IMAGE_NAME:$TAG'
             }
         }
-
+/*
         stage('Cleanup Docker') {
             steps {
                 sh 'docker system prune -af || true'
             }
         }
-
+*/
         stage('Show Image Info') {
             steps {
                 echo "Pushed Image: ${IMAGE_NAME}:${TAG}"
