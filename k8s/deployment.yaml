@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: computer-store
-        image: vikas0112/computer-store:20260406-163429
+        image: vikas0112/computer-store:20260406-164448
         ports:
         - containerPort: 3000
