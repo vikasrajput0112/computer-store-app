@@ -20,7 +20,10 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$TAG .'
+                sh '''
+                docker build -t $IMAGE_NAME:$TAG .
+                docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:latest
+                '''
             }
         }
 
@@ -38,29 +41,33 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                sh 'docker push $IMAGE_NAME:$TAG'
+                sh '''
+                docker push $IMAGE_NAME:$TAG
+                docker push $IMAGE_NAME:latest
+                '''
             }
         }
-/*
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                kubectl rollout restart deployment computer-store || true
+                '''
+            }
+        }
+
         stage('Cleanup Docker') {
             steps {
                 sh 'docker system prune -af || true'
             }
         }
-*/
+
         stage('Show Image Info') {
             steps {
-                echo "Pushed Image: ${IMAGE_NAME}:${TAG}"
+                echo "Pushed Images:"
+                echo "${IMAGE_NAME}:${TAG}"
+                echo "${IMAGE_NAME}:latest"
             }
         }
-    stage('Deploy to Kubernetes') {
-    steps {
-        sh """
-        sed -i 's|image: .*|image: ${IMAGE_NAME}:${TAG}|g' k8s/deployment.yaml
-        kubectl apply -f k8s/deployment.yaml
-        kubectl rollout restart deployment computer-store
-        """
-    }
-}
     }
 }
